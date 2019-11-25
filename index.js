@@ -16,7 +16,7 @@ class CustomCrop extends Component {
         super(props);
         this.state = {
             viewHeight:
-                Dimensions.get('window').width * (props.height / props.width),
+                props.containerWidth * (props.height / props.width),
             height: props.height,
             width: props.width,
             image: props.initialImage,
@@ -39,7 +39,7 @@ class CustomCrop extends Component {
                           props.rectangleCoordinates.topRight,
                           true,
                       )
-                    : { x: Dimensions.get('window').width - 100, y: 100 },
+                    : { x: props.containerWidth - 100, y: 100 },
             ),
             bottomLeft: new Animated.ValueXY(
                 props.rectangleCoordinates
@@ -56,7 +56,7 @@ class CustomCrop extends Component {
                           true,
                       )
                     : {
-                          x: Dimensions.get('window').width - 100,
+                          x: props.containerWidth - 100,
                           y: this.state.viewHeight - 100,
                       },
             ),
@@ -141,7 +141,7 @@ class CustomCrop extends Component {
 
     imageCoordinatesToViewCoordinates(corner) {
         return {
-            x: (corner.x * Dimensions.get('window').width) / this.state.width,
+            x: (corner.x * this.props.containerWidth) / this.state.width,
             y: (corner.y * this.state.viewHeight) / this.state.height,
         };
     }
@@ -149,7 +149,7 @@ class CustomCrop extends Component {
     viewCoordinatesToImageCoordinates(corner) {
         return {
             x:
-                (corner.x._value / Dimensions.get('window').width) *
+                (corner.x._value / this.props.containerWidth) *
                 this.state.width,
             y: (corner.y._value / this.state.viewHeight) * this.state.height,
         };
@@ -180,7 +180,7 @@ class CustomCrop extends Component {
                     />
                     <Svg
                         height={this.state.viewHeight}
-                        width={Dimensions.get('window').width}
+                        width={this.props.containerWidth}
                         style={{ position: 'absolute', left: 0, top: 0 }}
                     >
                         <AnimatedPolygon
@@ -293,7 +293,7 @@ const s = (props) => ({
         backgroundColor: props.handlerColor || 'blue',
     },
     image: {
-        width: Dimensions.get('window').width,
+        width: '100%',
         position: 'absolute',
     },
     bottomButton: {
@@ -317,7 +317,7 @@ const s = (props) => ({
     cropContainer: {
         position: 'absolute',
         left: 0,
-        width: Dimensions.get('window').width,
+        width: props.containerWidth,
         top: 0,
     },
 });
